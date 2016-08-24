@@ -1,0 +1,30 @@
+object Form1: TForm1
+  Left = 465
+  Height = 240
+  Top = 182
+  Width = 320
+  Caption = 'Form1'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '1.6.0.4'
+  object LazuliButton1: TLazuliButton
+    Left = 8
+    Height = 30
+    Top = 8
+    Width = 112
+    AutoSize = True
+    Caption = 'Lazuli Button'
+    TabOrder = 0
+    TabStop = True
+  end
+  object LazuliButton2: TLazuliButton
+    Left = 8
+    Height = 30
+    Top = 48
+    Width = 112
+    AutoSize = True
+    Caption = 'Lazuli Button'
+    TabOrder = 1
+    TabStop = True
+  end
+end
