@@ -19,7 +19,7 @@ type
     { Button }
     procedure MeasureButton(Control: TLazuliButton; Bitmap: TBGRABitmap;
       var PreferredWidth, PreferredHeight: integer);
-    procedure DrawButton(Control: TLazuliButton; State: TLazuliButtonState;
+    procedure DrawButton(Control: TLazuliButton; State: TLazuliButtonStates;
       Bitmap: TBGRABitmap);
   end;
 
@@ -58,34 +58,71 @@ begin
 end;
 
 procedure TLazuliTheme.DrawButton(Control: TLazuliButton;
-  State: TLazuliButtonState; Bitmap: TBGRABitmap);
+  State: TLazuliButtonStates; Bitmap: TBGRABitmap);
 var
   ts: TSize;
+  Width, Height: integer;
 begin
   AssignFont(Control, Bitmap);
   ts := Bitmap.TextSize(Control.Caption);
+  Width := Control.Width;
+  Height := Control.Height;
   if Control.Enabled then
   begin
-    case State of
-      lbsNormal: Bitmap.FillRoundRectAntialias(0, 0, Control.Width,
-          Control.Height, 10, 10, BGRAWhite, [], False);
-      lbsHovered: Bitmap.FillRoundRectAntialias(0, 0, Control.Width,
-          Control.Height, 10, 10, BGRA(200, 200, 200), [], False);
-      lbsActive: Bitmap.FillRoundRectAntialias(0, 0, Control.Width,
-          Control.Height, 10, 10, BGRA(100, 100, 100), [], False);
+    if lbsActive in State then
+    begin
+      { Button Down }
+      Bitmap.Rectangle(0, 0, Width, Height - 1, BGRA(48, 48, 48),
+        BGRA(61, 61, 61), dmSet);
+      Bitmap.Rectangle(1, 1, Width - 1, Height - 2, BGRA(55, 55, 55),
+        BGRA(61, 61, 61), dmSet);
+      Bitmap.SetHorizLine(0, Height - 1, Width - 1, BGRA(115, 115, 115));
+    end
+    else
+    begin
+      if lbsNormal in State then
+      begin
+        { Button Normal }
+        Bitmap.GradientFill(0, 0, Width, Height, BGRA(107, 107, 107),
+          BGRA(84, 84, 84), gtLinear, PointF(0, 0), PointF(0, Height), dmSet);
+        Bitmap.Rectangle(0, 0, Width, Height - 1, BGRA(48, 48, 48), dmSet);
+        Bitmap.SetHorizLine(1, 1, Width - 2, BGRA(130, 130, 130));
+        Bitmap.SetHorizLine(0, Height - 1, Width - 1, BGRA(115, 115, 115));
+        { Button Focused }
+        if Control.Focused then
+        begin
+          Bitmap.Rectangle(1, 2, Width - 1, Height - 2, BGRA(80, 111, 172), dmSet);
+        end;
+      end;
+      if lbsHovered in State then
+      begin
+        { Button Hovered }
+        Bitmap.GradientFill(0, 0, Width, Height, BGRA(132, 132, 132),
+          BGRA(109, 109, 109), gtLinear, PointF(0, 0), PointF(0, Height), dmSet);
+        Bitmap.Rectangle(0, 0, Width, Height - 1, BGRA(48, 48, 48), dmSet);
+        Bitmap.SetHorizLine(1, 1, Width - 2, BGRA(160, 160, 160));
+        Bitmap.SetHorizLine(0, Height - 1, Width - 1, BGRA(115, 115, 115));
+      end;
     end;
-    if Control.Focused then
-      Bitmap.RoundRectAntialias(2, 2, Control.Width-3, Control.Height-3, 10, 10, BGRA(230, 230, 230), 2);
-    Bitmap.TextOut((Control.Width - ts.cx) div 2, (Control.Height - ts.cy) div
-      2, Control.Caption, BGRABlack);
   end
   else
   begin
-    Bitmap.FillRoundRectAntialias(0, 0, Control.Width, Control.Height,
-      10, 10, BGRA(75, 75, 75), [], False);
-    Bitmap.TextOut((Control.Width - ts.cx) div 2, (Control.Height - ts.cy) div
-      2, Control.Caption, BGRA(200, 200, 200));
+    { Button Disabled }
+    Bitmap.Rectangle(0, 0, Width, Height - 1, BGRA(48, 48, 48),
+      BGRA(61, 61, 61), dmSet);
+    Bitmap.SetHorizLine(0, Height - 1, Width - 1, BGRA(115, 115, 115));
   end;
+
+  if Control.Enabled then
+  begin
+    Bitmap.TextOut((Width - ts.cx) div 2, ((Height - ts.cy) div 2) -
+      1, Control.Caption, BGRA(47, 47, 47));
+    Bitmap.TextOut((Width - ts.cx) div 2, (Height - ts.cy) div
+      2, Control.Caption, BGRA(229, 229, 229));
+  end
+  else
+    Bitmap.TextOut((Width - ts.cx) div 2, (Height - ts.cy) div
+      2, Control.Caption, BGRAWhite);
 end;
 
 initialization

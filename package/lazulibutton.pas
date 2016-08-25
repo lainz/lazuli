@@ -10,6 +10,7 @@ uses
 
 type
   TLazuliButtonState = (lbsNormal, lbsHovered, lbsActive);
+  TLazuliButtonStates = set of TLazuliButtonState;
 
   { TLazuliButton }
 
@@ -22,7 +23,7 @@ type
     FModalResult: TModalResult;
     FShortCut: TShortcut;
     FShortCutKey2: TShortcut;
-    FState: TLazuliButtonState;
+    FState: TLazuliButtonStates;
     FRolesUpdateLocked: boolean;
     procedure SetCancel(AValue: boolean);
     procedure SetDefault(AValue: boolean);
@@ -193,7 +194,7 @@ procedure TLazuliButton.MouseDown(Button: TMouseButton; Shift: TShiftState;
 begin
   if CanFocus() then
     SetFocus();
-  FState := lbsActive;
+  FState := FState + [lbsActive];
   Invalidate;
   inherited MouseDown(Button, Shift, X, Y);
 end;
@@ -201,21 +202,21 @@ end;
 procedure TLazuliButton.MouseUp(Button: TMouseButton; Shift: TShiftState;
   X, Y: integer);
 begin
-  FState := lbsHovered;
+  FState := FState - [lbsActive];
   Invalidate;
   inherited MouseUp(Button, Shift, X, Y);
 end;
 
 procedure TLazuliButton.MouseEnter;
 begin
-  FState := lbsHovered;
+  FState := FState + [lbsHovered];
   Invalidate;
   inherited MouseEnter;
 end;
 
 procedure TLazuliButton.MouseLeave;
 begin
-  FState := lbsNormal;
+  FState := FState - [lbsHovered];
   Invalidate;
   inherited MouseLeave;
 end;
@@ -224,7 +225,7 @@ procedure TLazuliButton.KeyDown(var Key: word; Shift: TShiftState);
 begin
   if (Key = VK_SPACE) or (Key = VK_RETURN) then
   begin
-    FState := lbsActive;
+    FState := FState + [lbsActive];
     Invalidate;
   end;
 
@@ -235,7 +236,7 @@ procedure TLazuliButton.KeyUp(var Key: word; Shift: TShiftState);
 begin
   if (Key = VK_SPACE) or (Key = VK_RETURN) then
   begin
-    FState := lbsNormal;
+    FState := FState - [lbsActive];
     Invalidate;
     if (Key = VK_SPACE) then
       Self.Click;
@@ -345,7 +346,7 @@ begin
   with GetControlClassDefaultSize do
     SetInitialBounds(0, 0, CX, CY);
   FBGRA := TBGRABitmap.Create(Width, Height);
-  FState := lbsNormal;
+  FState := [lbsNormal];
   FRolesUpdateLocked := False;
   ControlStyle := ControlStyle + [csHasDefaultAction, csHasCancelAction];
   TabStop := True;
