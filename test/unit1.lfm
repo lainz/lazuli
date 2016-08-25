@@ -1,0 +1,35 @@
+object Form2: TForm2
+  Left = 554
+  Height = 240
+  Top = 239
+  Width = 320
+  Caption = 'Form2'
+  ClientHeight = 240
+  ClientWidth = 320
+  OnShow = FormShow
+  LCLVersion = '1.6.0.4'
+  object LazuliButton3: TLazuliButton
+    Left = 8
+    Height = 30
+    Top = 8
+    Width = 46
+    AutoSize = True
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
+    OnClick = LazuliButton3Click
+    TabOrder = 0
+  end
+  object LazuliButton4: TLazuliButton
+    Left = 64
+    Height = 30
+    Top = 8
+    Width = 70
+    AutoSize = True
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    OnClick = LazuliButton4Click
+    TabOrder = 1
+  end
+end

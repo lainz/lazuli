@@ -6,6 +6,7 @@ object Form1: TForm1
   Caption = 'Form1'
   ClientHeight = 240
   ClientWidth = 320
+  OnCreate = FormCreate
   LCLVersion = '1.6.0.4'
   object LazuliButton1: TLazuliButton
     Left = 8
@@ -14,8 +15,9 @@ object Form1: TForm1
     Width = 112
     AutoSize = True
     Caption = 'Lazuli Button'
+    Color = clBtnFace
+    OnClick = LazuliButton1Click
     TabOrder = 0
-    TabStop = True
   end
   object LazuliButton2: TLazuliButton
     Left = 8
@@ -24,7 +26,7 @@ object Form1: TForm1
     Width = 112
     AutoSize = True
     Caption = 'Lazuli Button'
+    Color = clBtnFace
     TabOrder = 1
-    TabStop = True
   end
 end

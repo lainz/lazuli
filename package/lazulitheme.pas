@@ -74,6 +74,8 @@ begin
       lbsActive: Bitmap.FillRoundRectAntialias(0, 0, Control.Width,
           Control.Height, 10, 10, BGRA(100, 100, 100), [], False);
     end;
+    if Control.Focused then
+      Bitmap.RoundRectAntialias(2, 2, Control.Width-3, Control.Height-3, 10, 10, BGRA(230, 230, 230), 2);
     Bitmap.TextOut((Control.Width - ts.cx) div 2, (Control.Height - ts.cy) div
       2, Control.Caption, BGRABlack);
   end
