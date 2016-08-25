@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 465
+  Left = 470
   Height = 240
-  Top = 182
+  Top = 177
   Width = 320
   Caption = 'Form1'
   ClientHeight = 240
@@ -28,6 +28,8 @@ object Form1: TForm1
     AutoSize = True
     Caption = 'Lazuli Button'
     Color = clBtnFace
+    Enabled = False
+    ParentBidiMode = False
     TabOrder = 1
   end
 end

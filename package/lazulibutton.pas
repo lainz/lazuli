@@ -9,7 +9,7 @@ uses
   BGRABitmap, BGRABitmapTypes;
 
 type
-  TLazuliButtonState = (lbsNormal, lbsHovered, lbsActive);
+  TLazuliButtonState = (lbsHovered, lbsActive);
   TLazuliButtonStates = set of TLazuliButtonState;
 
   { TLazuliButton }
@@ -346,7 +346,6 @@ begin
   with GetControlClassDefaultSize do
     SetInitialBounds(0, 0, CX, CY);
   FBGRA := TBGRABitmap.Create(Width, Height);
-  FState := [lbsNormal];
   FRolesUpdateLocked := False;
   ControlStyle := ControlStyle + [csHasDefaultAction, csHasCancelAction];
   TabStop := True;
