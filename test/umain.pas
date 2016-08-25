@@ -5,8 +5,7 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, LazuliButton;
+  Forms, Controls, ExtCtrls, LazuliButton, LazuliProgressBar;
 
 type
 
@@ -15,9 +14,12 @@ type
   TForm1 = class(TForm)
     LazuliButton1: TLazuliButton;
     LazuliButton2: TLazuliButton;
-    procedure Button1Click(Sender: TObject);
+    LazuliProgressBar1: TLazuliProgressBar;
+    Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure LazuliButton1Click(Sender: TObject);
+    procedure LazuliButton2Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { private declarations }
   public
@@ -43,9 +45,16 @@ begin
   end;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.LazuliButton2Click(Sender: TObject);
 begin
-  ShowMessage('Hello');
+  LazuliProgressBar1.AutoSize := True;
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  if LazuliProgressBar1.Position = LazuliProgressBar1.Max then
+    Timer1.Enabled := False;
+  LazuliProgressBar1.Position := LazuliProgressBar1.Position + 2;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

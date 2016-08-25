@@ -6,21 +6,29 @@ interface
 
 uses
   Classes, SysUtils, Types, Controls, Graphics, BGRABitmap, BGRABitmapTypes,
-  LazuliButton;
+  BGRAGradients, LazuliButton, LazuliProgressBar;
 
 type
 
   { TLazuliTheme }
 
   TLazuliTheme = class
+  private
+    { ProgressBar}
+    FRandSeed: integer;
   protected
     procedure AssignFont(Control: TCustomControl; Bitmap: TBGRABitmap);
   public
+    constructor Create;
     { Button }
     procedure MeasureButton(Control: TLazuliButton; Bitmap: TBGRABitmap;
       var PreferredWidth, PreferredHeight: integer);
     procedure DrawButton(Control: TLazuliButton; State: TLazuliButtonStates;
       Bitmap: TBGRABitmap);
+    { ProgressBar }
+    procedure MeasureProgressBar(Control: TLazuliProgressBar; Bitmap: TBGRABitmap;
+      var PreferredWidth, PreferredHeight: integer);
+    procedure DrawProgressBar(Control: TLazuliProgressBar; Bitmap: TBGRABitmap);
   end;
 
 var
@@ -44,6 +52,12 @@ begin
     fqCleartype: Bitmap.FontQuality := fqSystemClearType;
     fqCleartypeNatural: Bitmap.FontQuality := fqSystemClearType;
   end;
+end;
+
+constructor TLazuliTheme.Create;
+begin
+  randomize;
+  FRandSeed := randseed;
 end;
 
 procedure TLazuliTheme.MeasureButton(Control: TLazuliButton;
@@ -124,6 +138,88 @@ begin
   else
     Bitmap.TextOut((Width - ts.cx) div 2, (Height - ts.cy) div 2,
       Control.Caption, BGRA(170, 170, 170));
+end;
+
+procedure TLazuliTheme.MeasureProgressBar(Control: TLazuliProgressBar;
+  Bitmap: TBGRABitmap; var PreferredWidth, PreferredHeight: integer);
+begin
+  PreferredWidth := 75;
+  PreferredHeight := 25;
+end;
+
+procedure TLazuliTheme.DrawProgressBar(Control: TLazuliProgressBar;
+  Bitmap: TBGRABitmap);
+
+  function ApplyLightness(c: TBGRAPixel; lightness: word): TBGRAPixel;
+  begin
+    Result := GammaCompression(SetLightness(GammaExpansion(c), lightness));
+  end;
+
+  procedure DrawBar(bounds: TRect);
+  var
+    lCol: TBGRAPixel;
+  begin
+    lCol := ColorToBGRA(ColorToRGB(Control.Color));
+
+    DoubleGradientAlphaFill(Bitmap, bounds,
+      ApplyLightness(lCol, 37000), ApplyLightness(lCol, 29000),
+      ApplyLightness(lCol, 26000), ApplyLightness(lCol, 18000),
+      gdVertical, gdVertical, gdVertical, 0.53);
+
+    InflateRect(bounds, -1, -1);
+
+    DoubleGradientAlphaFill(Bitmap, bounds,
+      ApplyLightness(lCol, 28000), ApplyLightness(lCol, 22000),
+      ApplyLightness(lCol, 19000), ApplyLightness(lCol, 11000),
+      gdVertical, gdVertical, gdVertical, 0.53);
+  end;
+
+var
+  content: TRect;
+  xpos, y, tx, ty: integer;
+  grayValue: integer;
+begin
+  tx := Control.ClientWidth;
+  ty := Control.ClientHeight;
+  Bitmap.Fill(BGRA(83, 83, 83));
+  Bitmap.Rectangle(0, 0, tx, ty, BGRA(255, 255, 255, 6), dmDrawWithTransparency);
+  if (tx > 2) and (ty > 2) then
+    Bitmap.Rectangle(1, 1, tx - 1, ty - 1, BGRA(29, 29, 29), dmSet);
+
+  if (tx > 4) and (ty > 4) then
+  begin
+    content  := Rect(2, 2, tx - 2, ty - 2);
+    randseed := FRandSeed;
+    for y := content.Top to content.Bottom - 1 do
+    begin
+      if y = content.Top then
+        grayValue := 33
+      else
+      if y = content.Top + 1 then
+        grayValue := 43
+      else
+        grayValue := 47 + random(50 - 47 + 1);
+      Bitmap.SetHorizLine(content.Left, y, content.Right - 1, BGRA(
+        grayValue, grayValue, grayValue));
+    end;
+    if tx >= 6 then
+      Bitmap.DrawVertLine(content.Right - 1, content.Top, content.Bottom - 1,
+        BGRA(0, 0, 0, 32));
+    if Control.Max > Control.Min then
+    begin
+      xpos := round((Control.Position - Control.Min) / (Control.Max - Control.Min) *
+        (content.right - content.left)) + content.left;
+      if xpos > content.left then
+      begin
+        DrawBar(rect(content.left, content.top, xpos, content.bottom));
+        if xpos < content.right then
+        begin
+          Bitmap.SetPixel(xpos, content.top, BGRA(62, 62, 62));
+          Bitmap.SetVertLine(xpos, content.top + 1, content.bottom - 1, BGRA(40, 40, 40));
+        end;
+      end;
+    end;
+  end;
 end;
 
 initialization

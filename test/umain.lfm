@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 470
+  Left = 562
   Height = 240
-  Top = 177
+  Top = 297
   Width = 320
   Caption = 'Form1'
   ClientHeight = 240
@@ -28,8 +28,31 @@ object Form1: TForm1
     AutoSize = True
     Caption = 'Lazuli Button'
     Color = clBtnFace
-    Enabled = False
     ParentBidiMode = False
+    OnClick = LazuliButton2Click
     TabOrder = 1
+  end
+  object LazuliProgressBar1: TLazuliProgressBar
+    Left = 8
+    Height = 25
+    Top = 88
+    Width = 107
+    BarShowText = False
+    BorderWidth = 0
+    Orientation = pbHorizontal
+    Min = 0
+    Max = 100
+    Position = 30
+    Smooth = False
+    Step = 0
+    Style = pbstNormal
+    Color = 14852966
+    TabOrder = 2
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    left = 192
+    top = 8
   end
 end

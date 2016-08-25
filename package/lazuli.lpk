@@ -11,16 +11,21 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
         <Filename Value="lazulibutton.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="LazuliButton"/>
       </Item1>
       <Item2>
-        <Filename Value="lazulitheme.pas"/>
-        <UnitName Value="lazulitheme"/>
+        <Filename Value="lazuliprogressbar.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="LazuliProgressBar"/>
       </Item2>
+      <Item3>
+        <Filename Value="lazulitheme.pas"/>
+        <UnitName Value="LazuliTheme"/>
+      </Item3>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>

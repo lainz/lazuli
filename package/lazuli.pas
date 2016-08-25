@@ -7,13 +7,14 @@ unit lazuli;
 interface
 
 uses
-  LazuliButton, LazuliTheme, LazarusPackageIntf;
+  LazuliButton, LazuliProgressBar, LazuliTheme, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
   RegisterUnit('LazuliButton', @LazuliButton.Register);
+  RegisterUnit('LazuliProgressBar', @LazuliProgressBar.Register);
 end;
 
 initialization

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Types, Controls, Graphics, LMessages, Forms, LCLType,
-  BGRABitmap, BGRABitmapTypes;
+  BGRABitmap;
 
 type
   TLazuliButtonState = (lbsHovered, lbsActive);
